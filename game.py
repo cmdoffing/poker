@@ -106,6 +106,7 @@ class Game:
     # sort them in order. I also need to be able to select those hands
     # that are the same at the top, as those will be the winners.
     # Delete this function.!!!
+    # ----------------------------------------------------
     def compareTwoHands(self, hand1, hand2 ):
         if   hand1.cards[0].rank > hand2.cards[0].rank:
             return hand1
