@@ -168,7 +168,7 @@ class Hand:
     def handHasThreeOfKind(self):
         for i in range(5):
             if self.cards[i].rank == self.cards[i+1].rank == self.cards[i+2].rank:
-                return self.cards[i:i+2]
+                return self.cards[i:i+3]
         return []
 
     def cardsHavePair(self, crds):
