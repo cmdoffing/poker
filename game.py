@@ -55,7 +55,11 @@ if __name__ == "__main__":
             3c 9d kh kc 8d Kd 2d"""
     s3 = """3c 9d kh qc 7d js 2d
             3c 9d kh qc 8d js 2d"""
-    g = Game( s3 )
+    s4 = """3c 9d kh 6c 5d 4s 2d
+            3c 9d kh ac 5d 4s 2d"""
+    s5 = """KS 9d kh kc 7d Kd 2d
+            qS 8d qh qc 8d qd 2d"""
+    g = Game( s4 )
     print("----------- Winning ------------")
     winners = g.getWinningHands()
     for h in winners:

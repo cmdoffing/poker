@@ -44,25 +44,25 @@ class Hand:
             return False
         elif self.bestHandRank  < hand2.bestHandRank:
             return True
-        if   self.bestCards[0].rank > hand2.bestCards[0].rank:
+        if   self.bestCards[0].ordering > hand2.bestCards[0].ordering:
             return False
-        elif self.bestCards[0].rank < hand2.bestCards[0].rank:
+        elif self.bestCards[0].ordering < hand2.bestCards[0].ordering:
             return True
-        elif self.bestCards[1].rank > hand2.bestCards[1].rank:
+        elif self.bestCards[1].ordering > hand2.bestCards[1].ordering:
             return False
-        elif self.bestCards[1].rank < hand2.bestCards[1].rank:
+        elif self.bestCards[1].ordering < hand2.bestCards[1].ordering:
             return True
-        elif self.bestCards[2].rank > hand2.bestCards[2].rank:
+        elif self.bestCards[2].ordering > hand2.bestCards[2].ordering:
             return False
-        elif self.bestCards[2].rank < hand2.bestCards[2].rank:
+        elif self.bestCards[2].ordering < hand2.bestCards[2].ordering:
             return True
-        elif self.bestCards[3].rank > hand2.bestCards[3].rank:
+        elif self.bestCards[3].ordering > hand2.bestCards[3].ordering:
             return False
-        elif self.bestCards[3].rank < hand2.bestCards[3].rank:
+        elif self.bestCards[3].ordering < hand2.bestCards[3].ordering:
             return True
-        elif self.bestCards[4].rank > hand2.bestCards[4].rank:
+        elif self.bestCards[4].ordering > hand2.bestCards[4].ordering:
             return False
-        elif self.bestCards[4].rank < hand2.bestCards[4].rank:
+        elif self.bestCards[4].ordering < hand2.bestCards[4].ordering:
             return True
         else:
             return False
@@ -76,6 +76,18 @@ class Hand:
             if c.ordering == order:
                 return c
         return False
+
+    def hasLowStraight(self):
+        """ Get a low straight (Ace 2 3 4 5) if resent. """
+        c1 = self.hasOrderingCard( 14 )
+        c2 = self.hasOrderingCard( 2 )
+        c3 = self.hasOrderingCard( 3 )
+        c4 = self.hasOrderingCard( 4 )
+        c5 = self.hasOrderingCard( 5 )
+        if c1 and c2 and c3 and c4 and c5:
+            return [c5, c4, c3, c2, c1]
+        else:
+            return []
 
 
     def cardsHaveStraight(self, candidateCards):
@@ -96,6 +108,10 @@ class Hand:
 
 
     def handHasStraight(self):
+        lowStraight = self.hasLowStraight()
+        if lowStraight:
+            return lowStraight
+
         high1 = self.cards
         straight = self.cardsHaveStraight(high1)
         if straight:
