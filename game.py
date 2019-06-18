@@ -8,6 +8,39 @@ class Game:
         self.hands = []
         for ln in lines:
             self.hands.append( Hand(ln) )
+
+    def getWinningHands(self):
+        """
+        Sort all hands by hand rank and cards,
+        then step thru the hands and compare side by side.
+        Compare hand ranks.
+        Or: just see if the next hand is equal to the first.
+        If so, include hand2 in the output, else we are done.
+        Step thru the sorted hands by index. When the equality test fails, 
+        take a slice from the hand at index 0 to index 1 (if only one hand),
+        or whatever index hand2 is at.
+        Return a list of winning hands, usually only one.
+        """
+        self.hands.sort( reverse=True )
+        result = self.hands[0:1]
+        for h in self.hands[1:]:
+            if self.handsAreEqual( result[0], h ):
+                result.append( h )
+        return result
+
+    def handsAreEqual(self, hand1, hand2 ):
+        return hand1.bestHandRank == hand2.bestHandRank and \
+               hand1.cards[0] == hand2.cards[0] and \
+               hand1.cards[1] == hand2.cards[1] and \
+               hand1.cards[2] == hand2.cards[2] and \
+               hand1.cards[3] == hand2.cards[3] and \
+               hand1.cards[4] == hand2.cards[4]
+
+    def getLosingHands(self):
+        winners = self.getWinningHands()
+        losing  = [hand for hand in self.hands if hand not in winners]
+        return losing
+
     
     def sortHandsByRank(self):
         return self.hands.sort( key=lambda h: h.bestHandRank, reverse=True )
@@ -34,9 +67,9 @@ class Game:
         if fullHouse:
             return fullHouse
 
-        bestFlushHand = self.bestFlush()
-        if bestFlushHand:
-            return bestFlushHand
+        #bestFlushHand = self.bestFlush()
+        #if bestFlushHand:
+        #    return bestFlushHand
 
         straight = self.bestStraight()
         if straight:
@@ -102,35 +135,6 @@ class Game:
         else:
             return []
 
-    # I need to be able to compare the bestFive cards in order and to 
-    # sort them in order. I also need to be able to select those hands
-    # that are the same at the top, as those will be the winners.
-    # Delete this function.!!!
-    # ----------------------------------------------------
-    def compareTwoHands(self, hand1, hand2 ):
-        if   hand1.cards[0].rank > hand2.cards[0].rank:
-            return hand1
-        elif hand1.cards[0].rank < hand2.cards[0].rank:
-            return hand2
-        elif hand1.cards[1].rank > hand2.cards[1].rank:
-            return hand1
-        elif hand1.cards[1].rank < hand2.cards[1].rank:
-            return hand2
-        elif hand1.cards[2].rank > hand2.cards[2].rank:
-            return hand1
-        elif hand1.cards[2].rank < hand2.cards[2].rank:
-            return hand2
-        elif hand1.cards[3].rank > hand2.cards[3].rank:
-            return hand1
-        elif hand1.cards[3].rank < hand2.cards[3].rank:
-            return hand2
-        elif hand1.cards[4].rank > hand2.cards[4].rank:
-            return hand1
-        elif hand1.cards[4].rank < hand2.cards[4].rank:
-            return hand2
-        else:
-            return hand1
-
 
     def displayGame(self):
         bh = self.bestHands()
@@ -143,8 +147,18 @@ class Game:
 
 
 if __name__ == "__main__":
-    s = """4d QD 5s 4c th 3h qs
+    s = """6d QD 5s 4c th 3h qs
+           4d QD 5s 4c th 3h qs
+           4d QD 5s 4c 4h 3h qs
+           3d 7d kh kc 8d jd 2d
            3d 5d kh kc 8d jd 2d"""
     g = Game( s )
-    g.hands.sort(reverse=True)
+    winners = g.getWinningHands()
+    for h in winners:
+        print(h.toString())
+    print("----------------------------------")
+    losing = g.getLosingHands()
+    for h in losing:
+        print(h.toString())
+    print("----------------------------------")
     g.displayGame()

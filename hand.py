@@ -20,7 +20,7 @@ class Hand:
     """A poker hand"""
 
     def __init__(self, handStr):
-        cardStrs = handStr.split()
+        cardStrs = handStr.strip().split()
         self.cards = [Card(s) for s in cardStrs]
         self.cards.sort(key=lambda c: c.ordering, reverse=True)
         self.suited = sorted( self.cards, key=lambda c: c.suit)
