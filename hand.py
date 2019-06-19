@@ -1,5 +1,3 @@
-import unittest
-
 class Card:
     """ A single card """
 
@@ -10,7 +8,6 @@ class Card:
         self.rank = cardStr[0].upper()
         self.suit = cardStr[1].upper()
         self.ordering = self.order[ self.rank ]
-        self.isAce = self.rank == "A"
 
     def toString(self):
         return self.rank + self.suit + " "

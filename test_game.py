@@ -1,5 +1,6 @@
-from hand import *
-from game import *
+from hand import Hand, Card
+from game import Game
+import unittest
 
 class TestCard( unittest.TestCase ):
     def test_card( self ):
@@ -7,7 +8,6 @@ class TestCard( unittest.TestCase ):
         self.assertEqual( c.rank, "T")
         self.assertEqual( c.suit, "H")
         self.assertEqual( c.ordering, 10)
-        self.assertFalse( c.isAce)
 
 class TestHand( unittest.TestCase ):
     def test_hand(self):
