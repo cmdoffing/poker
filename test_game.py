@@ -1,4 +1,5 @@
 from hand import *
+from game import *
 
 class TestCard( unittest.TestCase ):
     def test_card( self ):
@@ -60,6 +61,98 @@ class TestHand( unittest.TestCase ):
         self.assertEqual( h.bestHandRank, 9 )
         self.assertEqual( h.bestHand, "Straight Flush")
 
+
+class TestGame( unittest.TestCase ):
+    def testStraightFlushPass(self):
+        s = """
+            KS ts js 8c qs 2c 9s
+            5s ts js 8s qs 2c
+            """
+        g = Game( s )
+        winners = g.getWinningHands()
+        losers  = g.getLosingHands()
+        self.assertEqual( winners[0].bestHand, 'Straight Flush' )
+        self.assertEqual( winners[0].bestHandRank, 9 )
+        self.assertEqual( losers[0].bestHand, 'Pass' )
+        self.assertEqual( losers[0].bestHandRank, 0 )
+
+    def testStraightFlush(self):
+        s = """KS ts js 8c qs 2c 9s
+               5d ts js 8s qs 2c 9s"""
+        g = Game( s )
+        winners = g.getWinningHands()
+        losers  = g.getLosingHands()
+        self.assertEqual( winners[0].bestHand, 'Straight Flush' )
+        self.assertEqual( winners[0].bestHandRank, 9 )
+        self.assertEqual( losers[0].bestHand, 'Straight Flush' )
+        self.assertEqual( losers[0].bestHandRank, 9 )
+
+    def test4OfKind(self):
+        s = """KS 9d kh kc 7d Kd 2d
+               qS 8d qh qc 8d qd 2d"""
+        g = Game( s )
+        winners = g.getWinningHands()
+        losers  = g.getLosingHands()
+        self.assertEqual( winners[0].bestHand, 'Four Of Kind' )
+        self.assertEqual( winners[0].bestHandRank, 8 )
+        self.assertEqual( losers[0].bestHand, 'Four Of Kind' )
+        self.assertEqual( losers[0].bestHandRank, 8 )
+
+    def testStraight(self):
+        s = """3c 9d kh 6c 5d 4s 2d
+               3c 9d kh ac 5d 4s 2d"""
+        g = Game( s )
+        winners = g.getWinningHands()
+        losers  = g.getLosingHands()
+        self.assertEqual( winners[0].bestHand, 'Straight' )
+        self.assertEqual( winners[0].bestHandRank, 5 )
+        self.assertEqual( losers[0].bestHand, 'Straight' )
+        self.assertEqual( losers[0].bestHandRank, 5 )
+
+    def testHighCards(self):
+        s = """3c 9d kh qc 7d js 2d
+               3c 9d kh qc 8d js 2d"""
+        g = Game( s )
+        winners = g.getWinningHands()
+        losers  = g.getLosingHands()
+        self.assertEqual( winners[0].bestHand, 'High Cards' )
+        self.assertEqual( winners[0].bestHandRank, 1 )
+        self.assertEqual( losers[0].bestHand, 'High Cards' )
+        self.assertEqual( losers[0].bestHandRank, 1 )
+
+    def testThreeOfKind(self):
+        s = """3c 9d kh kc 7d Kd 2d
+               3c 9d kh kc 8d Kd 2d"""
+        g = Game( s )
+        winners = g.getWinningHands()
+        losers  = g.getLosingHands()
+        self.assertEqual( winners[0].bestHand, 'Three Of Kind' )
+        self.assertEqual( winners[0].bestHandRank, 4 )
+        self.assertEqual( losers[0].bestHand, 'Three Of Kind' )
+        self.assertEqual( losers[0].bestHandRank, 4 )
+
+    def testBigGame(self):
+        s = """
+           6d QD 5s 4c th 3h qs
+           4d QD 5s 4c th 3h qs
+           4d QD 5s 4c 4h 3h qs
+           4d QD 5s 2c 4h QH qs
+           3d 7d kh kc 8d jd 2d
+           3c 7d kh kc 8d Kd 2d
+           3d 5d kh kc 8d jd 2d
+           """
+        g = Game( s )
+        winners = g.getWinningHands()
+        losers  = g.getLosingHands()
+        self.assertEqual( winners[0].bestHand, 'Full House' )
+        self.assertEqual( winners[0].bestHandRank, 7 )
+        self.assertEqual( losers[0].bestHand, 'Full House' )
+        self.assertEqual( losers[0].bestHandRank, 7 )
+        self.assertEqual( losers[1].bestHandRank, 6 )
+        self.assertEqual( losers[2].bestHandRank, 6 )
+        self.assertEqual( losers[3].bestHandRank, 4 )
+        self.assertEqual( losers[4].bestHandRank, 3 )
+        self.assertEqual( losers[5].bestHandRank, 2 )
 
 if __name__ == "__main__":
     unittest.main()

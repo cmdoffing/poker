@@ -234,6 +234,11 @@ class Hand:
         return crds + newCards
 
     def setBestHand(self):
+        if len(self.cards) < 7:   # or 'pass' in handStr:
+            self.bestHand = "Pass"
+            self.bestHandRank = 0
+            self.bestCards = self.cards[0:5]
+            return
         sfc = self.straightFlushCards()
         if sfc:
             self.bestHand = "Straight Flush"

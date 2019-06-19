@@ -5,8 +5,9 @@ class Game:
     def __init__(self, cardStr):
         """ Takes one or more lines of card strings and creates a game. """
         lines = cardStr.splitlines()
+        lines2 = [ln for ln in lines if ln.strip() != '']
         self.hands = []
-        for ln in lines:
+        for ln in lines2:
             self.hands.append( Hand(ln) )
 
     def getWinningHands(self):
@@ -43,13 +44,15 @@ class Game:
 
 
 if __name__ == "__main__":
-    s = """6d QD 5s 4c th 3h qs
+    s1 = """
+           6d QD 5s 4c th 3h qs
            4d QD 5s 4c th 3h qs
            4d QD 5s 4c 4h 3h qs
            4d QD 5s 2c 4h QH qs
            3d 7d kh kc 8d jd 2d
            3c 7d kh kc 8d Kd 2d
-           3d 5d kh kc 8d jd 2d"""
+           3d 5d kh kc 8d jd 2d
+        """
 
     s2 = """3c 9d kh kc 7d Kd 2d
             3c 9d kh kc 8d Kd 2d"""
@@ -59,7 +62,13 @@ if __name__ == "__main__":
             3c 9d kh ac 5d 4s 2d"""
     s5 = """KS 9d kh kc 7d Kd 2d
             qS 8d qh qc 8d qd 2d"""
-    g = Game( s4 )
+    s6 = """KS ts js 8c qs 2c 9s
+            5d ts js 8s qs 2c 9s"""
+    s7 = """
+         KS ts js 8c qs 2c 9s
+         5s ts js 8s qs 2c
+         """
+    g = Game( s1 )
     print("----------- Winning ------------")
     winners = g.getWinningHands()
     for h in winners:
