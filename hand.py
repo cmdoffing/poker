@@ -78,13 +78,27 @@ class Hand:
         return False
 
     def hasLowStraight(self):
-        """ Get a low straight (Ace 2 3 4 5) if resent. """
+        """ Get a low straight (Ace 2 3 4 5) if present. """
         c1 = self.hasOrderingCard( 14 )
         c2 = self.hasOrderingCard( 2 )
         c3 = self.hasOrderingCard( 3 )
         c4 = self.hasOrderingCard( 4 )
         c5 = self.hasOrderingCard( 5 )
         if c1 and c2 and c3 and c4 and c5:
+            return [c5, c4, c3, c2, c1]
+        else:
+            return []
+
+
+    def hasLowStraightFlush(self):
+        """ Get a low straight flush (Ace 2 3 4 5) if present. """
+        c1 = self.hasOrderingCard( 14 )
+        c2 = self.hasOrderingCard( 2 )
+        c3 = self.hasOrderingCard( 3 )
+        c4 = self.hasOrderingCard( 4 )
+        c5 = self.hasOrderingCard( 5 )
+        if c1 and c2 and c3 and c4 and c5 and \
+           c1.suit == c2.suit == c3.suit == c4.suit == c5.suit:
             return [c5, c4, c3, c2, c1]
         else:
             return []
@@ -139,6 +153,9 @@ class Hand:
         return self.haveSameSuit( crds ) and self.cardsHaveStraight( crds )
 
     def straightFlushCards( self ):
+        crds = self.hasLowStraightFlush()
+        if crds:
+            return crds
         crds = self.cards[0:5]
         if self.isStraightFlush(crds):
             return crds

@@ -78,7 +78,9 @@ class TestGame( unittest.TestCase ):
 
     def testStraightFlush(self):
         s = """KS ts js 8c qs 2c 9s
-               5d ts js 8s qs 2c 9s"""
+               5d ts js 8s qs 2c 9s
+               5d 4d 3d 2d ad 5h ts
+               5d 4d 3d 2h 2s 2d ad"""
         g = Game( s )
         winners = g.getWinningHands()
         losers  = g.getLosingHands()
@@ -86,6 +88,8 @@ class TestGame( unittest.TestCase ):
         self.assertEqual( winners[0].bestHandRank, 9 )
         self.assertEqual( losers[0].bestHand, 'Straight Flush' )
         self.assertEqual( losers[0].bestHandRank, 9 )
+        self.assertEqual( losers[1].bestHandRank, 9 )
+        # self.assertEqual( losers[2].bestHandRank, 9 )
 
     def test4OfKind(self):
         s = """KS 9d kh kc 7d Kd 2d
