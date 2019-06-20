@@ -21,7 +21,18 @@ class Hand:
         self.cards = [Card(s) for s in cardStrs]
         self.cards.sort(key=lambda c: c.ordering, reverse=True)
         self.suited = sorted( self.cards, key=lambda c: c.suit)
+        # Get all cards into suits and set fiveSuit to any suit of 
+        # 5 cards or more. Use this for flushes and straight flushes.
+        self.suits = [self.getSuitCards('C'), self.getSuitCards('H'),
+                      self.getSuitCards('D'), self.getSuitCards('S')]
+        self.fiveSuit = []
+        for s in self.suits:
+            if len(s) >= 5:
+                self.fiveSuit = s
         self.setBestHand()
+
+    def getSuitCards(self, givenSuit):
+        return [c for c in self.cards if c.suit == givenSuit]
 
     def toString(self):
         cards = self.bestCards + self.remainingCards( self.bestCards )
@@ -64,6 +75,17 @@ class Hand:
         else:
             return False
 
+    def hasSuitedOrderingCard(self, order):
+        """
+        Check fiveSuit cards to see if a card with the given ordering 
+        is present. Use this to properly check for straight flushes,
+        even in the presence of pairs.
+        """
+        for c in self.fiveSuit:
+            if c.ordering == order:
+                return c
+
+
     def hasOrderingCard(self, order):
         """
         Check cards to see if a card with the given ordering is present. 
@@ -89,11 +111,11 @@ class Hand:
 
     def hasLowStraightFlush(self):
         """ Get a low straight flush (Ace 2 3 4 5) if present. """
-        c1 = self.hasOrderingCard( 14 )
-        c2 = self.hasOrderingCard( 2 )
-        c3 = self.hasOrderingCard( 3 )
-        c4 = self.hasOrderingCard( 4 )
-        c5 = self.hasOrderingCard( 5 )
+        c1 = self.hasSuitedOrderingCard( 14 )
+        c2 = self.hasSuitedOrderingCard( 2 )
+        c3 = self.hasSuitedOrderingCard( 3 )
+        c4 = self.hasSuitedOrderingCard( 4 )
+        c5 = self.hasSuitedOrderingCard( 5 )
         if c1 and c2 and c3 and c4 and c5 and \
            c1.suit == c2.suit == c3.suit == c4.suit == c5.suit:
             return [c5, c4, c3, c2, c1]
